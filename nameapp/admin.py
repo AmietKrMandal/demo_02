@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Name
+from .models import Address
 
 
-@admin.register(Name)
-class NameAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at')
-    search_fields = ('name',)
-    list_filter = ('created_at',)
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('id','address','created_at')
+    search_fields = ('address',)
+
+

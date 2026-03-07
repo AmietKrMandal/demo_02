@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Name Entry App</title>
+    <title>Address Saver App</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background:#d5bfff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -31,7 +31,7 @@
         }
 
         h1 {
-            color: #333;
+            color: #7b60ff;
             margin-bottom: 10px;
             font-size: 2rem;
             text-align: center;
@@ -116,19 +116,19 @@
             border: 1px solid #f5c6cb;
         }
 
-        .names-list {
+        .addresses-list {
             margin-top: 30px;
             padding-top: 30px;
             border-top: 2px solid #f0f0f0;
         }
 
-        .names-list h2 {
+        .addresses-list h2 {
             color: #333;
             font-size: 1.3rem;
             margin-bottom: 15px;
         }
 
-        .name-item {
+        .address-item {
             background: #f8f9fa;
             padding: 12px 16px;
             border-radius: 8px;
@@ -139,17 +139,17 @@
             transition: transform 0.2s ease;
         }
 
-        .name-item:hover {
+        .address-item:hover {
             transform: translateX(5px);
             background: #e9ecef;
         }
 
-        .name-text {
+        .address-text {
             color: #333;
             font-weight: 500;
         }
 
-        .name-date {
+        .address-date {
             color: #999;
             font-size: 0.8rem;
         }
@@ -174,8 +174,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>✨ Name Entry App</h1>
-        <p class="subtitle">Enter your name and save it to the database</p>
+        <h1>✨ Address Saver App</h1>
+        <p class="subtitle">Enter your address📍and save it to the database🎇</p>
 
         {% if messages %}
         <div class="messages">
@@ -190,26 +190,26 @@
         <form method="POST" action="{% url 'home' %}">
             {% csrf_token %}
             <div class="form-group">
-                <label for="name">Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name..." required autofocus>
+                <label for="address">Your Address</label>
+                <input type="text" id="address" name="address" placeholder="Enter your address..." required autofocus>
             </div>
-            <button type="submit">💾 Save Name</button>
+            <button type="submit">💾 Save Address</button>
         </form>
 
-        {% if names %}
-        <div class="names-list">
-            <h2>Saved Names <span class="count-badge">{{ names|length }}</span></h2>
-            {% for name_obj in names %}
-            <div class="name-item">
-                <span class="name-text">{{ name_obj.name }}</span>
-                <span class="name-date">{{ name_obj.created_at|date:"M d, Y H:i" }}</span>
+        {% if addresses %}
+        <div class="addresses-list">
+            <h2>Saved Addresses <span class="count-badge">{{ addresses|length }}</span></h2>
+            {% for address_obj in addresses %}
+            <div class="address-item">
+                <span class="address-text">{{ address_obj.address }}</span>
+                <span class="address-date">Created:{{ address_obj.created_at|date:"d M Y H:i " }}</span>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <div class="names-list">
-            <h2>Saved Names</h2>
-            <div class="empty-state">No names saved yet. Be the first!</div>
+        <div class="addresses-list-list">
+            <h2>Saved Address</h2>
+            <div class="empty-state">No addresses saved yet. Be the first!</div>
         </div>
         {% endif %}
     </div>

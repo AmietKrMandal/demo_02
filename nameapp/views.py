@@ -1,17 +1,18 @@
-from django.shortcuts import render, redirect
+from .models import Address
 from django.contrib import messages
-from .models import Name
+from django.shortcuts import render, redirect
+
 
 
 def home(request):
     if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        if name:
-            Name.objects.create(name=name)
-            messages.success(request, f'Name "{name}" saved successfully!')
+        address= request.POST.get('address', '').strip()
+        if address:
+            Address.objects.create(address=address)
+            messages.success(request, f'Address "{address}" saved successfully!')
             return redirect('home')
         else:
-            messages.error(request, 'Please enter a valid name.')
+            messages.error(request, 'Please enter a valid address.')
     
-    names = Name.objects.all()
-    return render(request, 'nameapp/home.html', {'names': names})
+    addresses = Address.objects.all()
+    return render(request, 'nameapp/home.html', {'addresses': addresses})

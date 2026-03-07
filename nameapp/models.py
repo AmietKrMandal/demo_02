@@ -1,12 +1,9 @@
 from django.db import models
 
 
-class Name(models.Model):
-    name = models.CharField(max_length=100)
+class Address(models.Model):
+    address = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
-        return self.name
+        return self.address
 
-    class Meta:
-        ordering = ['-created_at']
