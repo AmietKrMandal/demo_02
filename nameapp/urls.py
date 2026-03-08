@@ -1,7 +1,8 @@
 from django.urls import path
-from . import views
+from .views import ContactDetailCreateView, ContactDetailDeleteView
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', ContactDetailCreateView.as_view(), name='home'),
+    path('delete/<int:pk>/', ContactDetailDeleteView.as_view(), name='contact-delete'),
 ]
 

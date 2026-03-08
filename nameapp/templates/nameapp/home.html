@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Address Saver App</title>
+    <title>Contact Details App</title>
     <style>
         * {
             margin: 0;
@@ -116,40 +116,55 @@
             border: 1px solid #f5c6cb;
         }
 
-        .addresses-list {
+        .contacts-list {
             margin-top: 30px;
             padding-top: 30px;
             border-top: 2px solid #f0f0f0;
         }
 
-        .addresses-list h2 {
+        .contacts-list h2 {
             color: #333;
             font-size: 1.3rem;
             margin-bottom: 15px;
         }
 
-        .address-item {
+        .contact-item {
             background: #f8f9fa;
-            padding: 12px 16px;
+            padding: 14px 18px;
             border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 10px;
             transition: transform 0.2s ease;
         }
 
-        .address-item:hover {
+        .contact-item:hover {
             transform: translateX(5px);
             background: #e9ecef;
         }
 
-        .address-text {
-            color: #333;
-            font-weight: 500;
+        .contact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .address-date {
+        .contact-name {
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .contact-phone {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .contact-address {
+            color: #777;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .contact-date {
             color: #999;
             font-size: 0.8rem;
         }
@@ -170,12 +185,31 @@
             font-size: 0.85rem;
             margin-left: 10px;
         }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: auto;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: none;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✨ Address Saver App</h1>
-        <p class="subtitle">Enter your address📍and save it to the database🎇</p>
+        <h1>✨ Contact Details App</h1>
+        <p class="subtitle">Save your contact details 📇 to the database 🎇</p>
 
         {% if messages %}
         <div class="messages">
@@ -189,27 +223,39 @@
 
         <form method="POST" action="{% url 'home' %}">
             {% csrf_token %}
+            {% for field in form %}
             <div class="form-group">
-                <label for="address">Your Address</label>
-                <input type="text" id="address" name="address" placeholder="Enter your address..." required autofocus>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" placeholder="Enter {{ field.label|lower }}..." required>
             </div>
-            <button type="submit">💾 Save Address</button>
+            {% endfor %}
+            <button type="submit">💾 Save Contact</button>
         </form>
 
-        {% if addresses %}
-        <div class="addresses-list">
-            <h2>Saved Addresses <span class="count-badge">{{ addresses|length }}</span></h2>
-            {% for address_obj in addresses %}
-            <div class="address-item">
-                <span class="address-text">{{ address_obj.address }}</span>
-                <span class="address-date">Created:{{ address_obj.created_at|date:"d M Y H:i " }}</span>
+        {% if contacts %}
+        <div class="contacts-list">
+            <h2>Saved Contacts <span class="count-badge">{{ contacts|length }}</span></h2>
+            {% for contact in contacts %}
+            <div class="contact-item">
+                <div class="contact-row">
+                    <span class="contact-name">{{ contact.Name }}</span>
+                    <span class="contact-date">{{ contact.created_at|date:"d M Y H:i" }}</span>
+                </div>
+                <div class="contact-phone">📞 {{ contact.Phone }}</div>
+                <div class="contact-row">
+                    <span class="contact-address">📍 {{ contact.address }}</span>
+                    <form method="POST" action="{% url 'contact-delete' contact.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-delete">🗑 Delete</button>
+                    </form>
+                </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <div class="addresses-list-list">
-            <h2>Saved Address</h2>
-            <div class="empty-state">No addresses saved yet. Be the first!</div>
+        <div class="contacts-list">
+            <h2>Saved Contacts</h2>
+            <div class="empty-state">No contacts saved yet. Be the first!</div>
         </div>
         {% endif %}
     </div>

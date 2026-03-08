@@ -1,18 +1,22 @@
-from .models import Address
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
+from django.views.generic import CreateView, DeleteView
+from .models import ContactDetail
 
 
+class ContactDetailCreateView(CreateView):
+    model = ContactDetail
+    fields = ['Name', 'Phone', 'address']
+    template_name = 'nameapp/home.html'
+    success_url = '/'
 
-def home(request):
-    if request.method == 'POST':
-        address= request.POST.get('address', '').strip()
-        if address:
-            Address.objects.create(address=address)
-            messages.success(request, f'Address "{address}" saved successfully!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Please enter a valid address.')
-    
-    addresses = Address.objects.all()
-    return render(request, 'nameapp/home.html', {'addresses': addresses})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contacts'] = ContactDetail.objects.all()
+        return context
+
+
+class ContactDetailDeleteView(DeleteView):
+    model = ContactDetail
+    success_url = '/'
+
